@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lhuc.mapper.UserMapper">
+
+
+    <resultMap id="userResultMap" type="com.lhuc.pojo.User">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="age" column="age"/>
+    </resultMap>
+
+
+    <!-- SQL片段，可以复用 -->
+    <sql id="user_column">
+        ID
+        ,NAME,AGE
+    </sql>
+
+
+    <!-- 演示分页查询 -->
+    <select id="getUserPage" resultType="com.lhuc.pojo.User">
+        SELECT
+        <include refid="user_column"></include>
+        FROM USER ORDER BY ID DESC
+    </select>
+
+
+    <select id="findByName" resultType="com.lhuc.pojo.User">
+        SELECT *
+        FROM USER
+        WHERE NAME = #{name}
+    </select>
+
+    <insert id="insert">
+        INSERT INTO USER(NAME, AGE)
+        VALUES (#{name}, #{age})
+    </insert>
+
+
+    <select id="selectUser" resultType="com.lhuc.pojo.User">
+        select *
+        from user
+        where name = #{0}
+          and age = #{1}
+    </select>
+
+
+    <select id="selectUserByMap" parameterType="java.util.Map" resultType="com.lhuc.pojo.User">
+        select *
+        from user
+        where name = #{name}
+          and age = #{age}
+    </select>
+
+
+    <select id="selectUserByBean" parameterType="com.lhuc.pojo.User" resultType="com.lhuc.pojo.User">
+        select *
+        from user
+        where name = #{name}
+          and age = #{age}
+    </select>
+
+
+    <!--<select id="findByJSONObject" resultType="com.lhuc.pojo.User" parameterType="com.alibaba.fastjson.JSONObject">-->
+        <!--select *-->
+        <!--from USER-->
+        <!--where NAME = #{name}-->
+          <!--and age = #{age}-->
+    <!--</select>-->
+
+
+    <select id="findByList" resultMap="userResultMap">
+        SELECT * from user where age in
+        <foreach collection="list" open="(" separator="," close=")" item="user">
+            #{user.age}
+        </foreach>
+    </select>
+
+
+</mapper>
