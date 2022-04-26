@@ -8,7 +8,6 @@ import com.lhuc.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -20,7 +19,6 @@ import java.util.Map;
  */
 @Slf4j
 @RestController
-@RequestMapping(value = "/demo")
 public class DemoController {
 
 
@@ -53,7 +51,7 @@ public class DemoController {
         log.info("当前页  ： {}" , currPage);
         PageInfo<Emp> pagEmp = userService.getEmpPage(currPage, PAGE_SIZE);
         //员工列表的数据
-        map.put("users", pagEmp.getList());
+        map.put("data", pagEmp.getList());
         //当前页
         map.put("currPage", currPage);
         //总页数
