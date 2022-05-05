@@ -84,4 +84,10 @@ public interface UserMapper {
     List<User> findByList(List list);
 
 
+    /**
+     * 原生批量插入
+     *
+     * @param list
+     */
+    void saveBatchByNative(@Param("arr") List<User> list);
 }

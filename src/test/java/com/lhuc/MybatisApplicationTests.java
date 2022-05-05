@@ -8,10 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @SpringBootTest
 class MybatisApplicationTests {
@@ -108,6 +105,36 @@ class MybatisApplicationTests {
         arrayList.add(User.builder().name("小米科技").age(11).build());
         List<User> list = userMapper.findByList(arrayList);
         list.forEach(System.err::println);
+    }
+
+
+    // 最大循环次数
+    private static final int MAX_COUNT = 100000;
+
+
+    /**
+     * 测试批量插入
+     */
+    @Test
+    void saveBatchByNative() {
+        long start = System.currentTimeMillis(); // 统计开始时间
+        List<User> list = new ArrayList<>();
+        for (int i = 0; i < MAX_COUNT; i++) {
+            User user = new User();
+            user.setName("test:" + i);
+            user.setPassword("123456");
+            if (i == MAX_COUNT) {
+                user.setCreateTime(new Date());
+            }
+            list.add(user);
+        }
+
+//        List<User> userList = new ArrayList<>();
+
+        // 批量插入
+        userMapper.saveBatchByNative(list);
+        long end = System.currentTimeMillis(); // 统计结束时间
+        System.out.println("执行时间：" + (end - start));
     }
 
 
